@@ -64,8 +64,14 @@ const userSchema = new Schema({
 
     userSchema.methods.comparePassword = async function(password) {
         try {
-           console.log("password",this.password);
+           console.log("password",this.password)
+           const IsValid= await bcrypt.compareSync(password, this.password);  // compare the password the user types to the hashed password in the database
+           return IsValid;
         } catch (err) {
-            return false;
+            console.log(err);
         }
-    }
+    };
+
+    const UserModel = db.model('User', userSchema);    
+
+    module.exports = UserModel;
