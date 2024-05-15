@@ -30,3 +30,26 @@ exports.register = async (req, res) => {
         res.status(500).json({message: "Internal server error"});
     }
 };
+
+exports.login = async (req, res) => {
+    try{
+        const { email, password } = req.body;
+        const user = await UserServices.getUserByEmail(email);
+        if(!user){
+            return res.status(400).json({message: "User does not exist"});
+        }
+        const passwordMatch = await UserServices.comparePassword(password);
+        if(!passwordMatch){
+            return res.status(400).json({message: "Incorrect password"});
+        }
+
+        // Generate token
+        const token =jwt.sign({id: user._id}, process.env.JWT_SECRET,); //expires in 24 hours
+        res.json({status: "success", token: token});
+    }
+    catch(err){
+        console.log(err);
+        res.status(500).json({message: "Internal server error"});
+    }
+
+}
