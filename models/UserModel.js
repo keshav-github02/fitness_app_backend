@@ -1,4 +1,4 @@
-const e = require('express');
+
 const db= require('./db/db');
 const mongoose = require('mongoose');
 
@@ -49,6 +49,7 @@ const userSchema = new Schema({
     });  // timestamps: true adds createdAt and updatedAt timestamps to the schema
 
     userSchema.pre('save', async function() {
+        // this function will run before a new user document is saved
        var user = this;
        if (!user.isModified('password')) return;
        try {

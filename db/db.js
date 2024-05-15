@@ -5,9 +5,7 @@ const connection=mongoose.createConnection('mongodb+srv://keshavagarwalwrs:A5xgA
         console.log('Connected to the database');
     }
 
-).on(
-    'error',(error)=>{
-        console.log('Error connecting to the database',error);
-    });
-
+).on('error', (error) => {
+    console.log(`Error connecting to the database: ${error}`);
+});
 module.exports=connection;
