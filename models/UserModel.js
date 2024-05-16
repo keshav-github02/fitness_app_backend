@@ -1,5 +1,5 @@
 
-const db= require('../db/db');
+const db = require('../db/db');
 const mongoose = require('mongoose');
 
 
@@ -24,8 +24,8 @@ const userSchema = new Schema({
     },
     gender: {
         type: String,
-        enum: ['male','female','other'],
-        required: [true,'Gender is required'],
+        enum: ['male', 'female', 'other'],
+        required: [true, 'Gender is required'],
     },
     height: {
         type: Number,
@@ -37,42 +37,42 @@ const userSchema = new Schema({
     },
     goal: {
         type: String,
-        required: [true,'Goal is required'],
+        required: [true, 'Goal is required'],
     },
     activityLevel: {
         type: String,
-        required: [true,'Activity level is required'],
+        required: [true, 'Activity level is required'],
     },
 
-    },{
-        timestamps: true,
-    });  // timestamps: true adds createdAt and updatedAt timestamps to the schema
+}, {
+    timestamps: true,
+});  // timestamps: true adds createdAt and updatedAt timestamps to the schema
 
-    userSchema.pre('save', async function() {
-        // this function will run before a new user document is saved
-       var user = this;
-       if (!user.isModified('password')) return;
-       try {
-          const salt = await bcrypt.genSalt(10); // generate a salt
-            const hash = await bcrypt.hash(user.password, salt); // hash the password with the salt
+userSchema.pre('save', async function () {
+    // this function will run before a new user document is saved
+    var user = this;
+    if (!user.isModified('password')) return;
+    try {
+        const salt = await bcrypt.genSalt(10); // generate a salt
+        const hash = await bcrypt.hash(user.password, salt); // hash the password with the salt
 
-            user.password = hash; // set the hashed password back on our user document
-       } catch (err) {
-              console.log(err);
-       }
-    });
+        user.password = hash; // set the hashed password back on our user document
+    } catch (err) {
+        console.log(err);
+    }
+});
 
 
-    userSchema.methods.comparePassword = async function(password) {
-        try {
-           console.log("password",this.password)
-           const IsValid= await bcrypt.compareSync(password, this.password);  // compare the password the user types to the hashed password in the database
-           return IsValid;
-        } catch (err) {
-            console.log(err);
-        }
-    };
+userSchema.methods.comparePassword = async function (password) {
+    try {
+        console.log("password", this.password)
+        const IsValid = await bcrypt.compareSync(password, this.password);  // compare the password the user types to the hashed password in the database
+        return IsValid;
+    } catch (err) {
+        console.log(err);
+    }
+};
 
-    const UserModel = db.model('User', userSchema);    
+const UserModel = db.model('User', userSchema);
 
-    module.exports = UserModel;
+module.exports = UserModel;

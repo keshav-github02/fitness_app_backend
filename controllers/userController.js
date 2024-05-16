@@ -44,8 +44,17 @@ exports.login = async (req, res) => {
         }
 
         // Generate token
-        const token =jwt.sign({id: user._id}, process.env.JWT_SECRET,); //expires in 24 hours
-        res.json({status: "success", token: token});
+        let tokenData = {
+            email: user.email,
+            userId: user._id,
+        };
+       const jwtKey= "A123";
+       const token = await UserServices.generateToken(tokenData, jwtKey, "24h"); // expires in 24 hours   
+       res.status(200).json({ 
+              status: "success",
+              message: "User logged in successfully",
+              token: token
+        });
     }
     catch(err){
         console.log(err);
