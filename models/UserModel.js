@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
 
-const userSchema = new Schema({
+const UserSchema = new Schema({
     email: {
         type: String,
         required: [true, 'Email is required'],
@@ -48,7 +48,7 @@ const userSchema = new Schema({
     timestamps: true,
 });  // timestamps: true adds createdAt and updatedAt timestamps to the schema
 
-userSchema.pre('save', async function () {
+UserSchema.pre('save', async function () {
     // this function will run before a new user document is saved
     var user = this;
     if (!user.isModified('password')) return;
@@ -63,7 +63,7 @@ userSchema.pre('save', async function () {
 });
 
 
-userSchema.methods.comparePassword = async function (password) {
+UserSchema.methods.comparePassword = async function (password) {
     try {
         console.log("password", this.password)
         const IsValid = await bcrypt.compareSync(password, this.password);  // compare the password the user types to the hashed password in the database
@@ -73,6 +73,6 @@ userSchema.methods.comparePassword = async function (password) {
     }
 };
 
-const UserModel = db.model('User', userSchema);
+const UserModel = db.model('User', UserSchema);
 
 module.exports = UserModel;

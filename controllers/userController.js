@@ -12,7 +12,7 @@ exports.register = async (req, res) => {
             height,
             weight,
             goal,
-            activity
+            activityLevel
         } = req.body;
 
         const duplicateUser = await UserServices.getUserByEmail(email);
@@ -21,7 +21,7 @@ exports.register = async (req, res) => {
 
         }
         // Register the user
-        const user = await UserServices.registerUser(email, password,age,gender,height,weight,goal,activity);
+        const user = await UserServices.registerUser(email, password,age,gender,height,weight,goal,activityLevel);
 
         res.json({ status: "success", message: "User registered successfully"});
     }
