@@ -3,11 +3,11 @@ const UserModel = require('../models/UserModel');
 const jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
 
 class UserServices {
-    static async registerUser(email, password,age,gender,height,weight,goal,activity) {
+    static async registerUser(email, password,age,gender,height,weight,goal,activityLevel) {
 
         try {
-            console.log("email", email, "password", password, "age", age, "gender", gender, "weight", weight, "height", height, "goal", goal, "activity", activity);
-            const createUser = new UserModel({ email, password, age, gender, weight, height, goal, activity });
+            console.log("email", email, "password", password, "age", age, "gender", gender, "weight", weight, "height", height, "goal", goal, "activityLevel", activityLevel);
+            const createUser = new UserModel({ email, password, age, gender, weight, height, goal, activityLevel });
             return await createUser.save();
         }
         catch (err) {
